@@ -1,0 +1,88 @@
+{% if pdf_mode %}
+    <link rel="stylesheet" href="file:///{{ static_path }}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="file:///{{ static_path }}/css/style.css">
+{% endif %}
+
+{% if not pdf_mode %}
+  {% include 'layout/header.html' %}
+{% endif %}
+
+<div class="{% if not pdf_mode %}container mt-4 mb-5{% endif %}">
+
+  {% if not pdf_mode and result %}
+  <div class="text-end mb-3">
+    <a href="{{ url_for('student.download_pdf', student_id=student.id) }}"
+       class="btn btn-danger btn-sm">
+      Download Result PDF
+    </a>
+  </div>
+  {% endif %}
+
+  <div class="result-page">
+    <div class="result-sheet card shadow-sm border-0 p-4">
+
+      <div class="text-center mb-4">
+        {% if pdf_mode %}
+          <img src="file:///{{ static_path }}/images/academic_logo.png"
+               class="result-logo mb-2">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/academic_logo.png') }}"
+               class="result-logo mb-2">
+        {% endif %}
+
+        <h4><b>WEB BASED RESULT PUBLICATION SYSTEM</b></h4>
+        <div class="text-muted">Final Examination Result</div>
+      </div>
+
+      <hr>
+
+      <table class="table table-bordered">
+        <tr>
+          <th>Roll No</th>
+          <td>{{ student.roll_no }}</td>
+          <th>Name</th>
+          <td>{{ student.name }}</td>
+        </tr>
+      </table>
+<div style="page-break-inside: avoid;">
+  <table class="table table-bordered result-table mt-3">
+        <thead class="table-light">
+           <tr style="background:#f3f3f3;">
+            <th>#</th>
+            <th>Subject</th>
+            <th class="text-center">Marks</th>
+            <th class="text-center">Max</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in details %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ d.subject }}</td>
+            <td class="text-center">{{ d.marks }}</td>
+            <td class="text-center">{{ d.max }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+      <table class="table table-bordered mt-3">
+        <tr>
+          <th>Total</th>
+          <td>{{ result.total_marks }}</td>
+        </tr>
+        <tr>
+          <th>Percentage</th>
+          <td>{{ "%.2f"|format(result.percentage) }}%</td>
+        </tr>
+        <tr>
+          <th>Grade</th>
+          <td class="fw-bold">{{ result.grade }}</td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+

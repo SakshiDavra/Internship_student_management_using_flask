@@ -1,0 +1,207 @@
+{% include 'layout/header.html' %}
+
+<div class="container mt-4">
+
+  <!-- ================= STUDENTS ================= -->
+  <div class="soft-card mb-5">
+
+    <form method="POST" action="{{ url_for('admin.publish_selected_results') }}">
+
+      <h5 class="soft-title d-flex justify-content-between align-items-center">
+        Students
+        <button type="submit"
+                class="btn btn-sm btn-success"
+                onclick="return confirm('Publish result for selected students?')">
+          <i class="bi bi-upload"></i> Publish Selected
+        </button>
+      </h5>
+
+      <div class="table-responsive">
+        <table class="table soft-table">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" id="selectAll">
+              </th>
+              <th>Roll</th>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Std</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for s in students %}
+            <tr>
+
+              <!-- Checkbox -->
+              <td>
+                {% if s.result and not s.result.is_published %}
+                  <input type="checkbox"
+                         name="student_ids"
+                         value="{{ s.id }}"
+                         class="student-checkbox">
+                {% endif %}
+              </td>
+
+              <td>{{ s.roll_no }}</td>
+              <td>{{ s.name }}</td>
+              <td class="text-muted">{{ s.user.username }}</td>
+              <td>
+                {{ s.course.course_name }} -
+                Year {{ s.year.year_no }}
+                ({{ s.division.division_name }})
+              </td>
+
+              <td class="text-end">
+               {% if s.result and s.result.email_status and "FAIL" in s.result.email_status %}
+
+                <button type="button"
+                        class="btn btn-sm btn-danger"
+                        onclick="toggleError('{{ s.id }}')">
+                  <i class="bi bi-exclamation-circle"></i> Error
+                </button>
+
+                <div id="error-{{ s.id }}"
+                    class="alert alert-danger mt-2 p-2 small"
+                    style="display:none; max-width:260px; word-break:break-word;">
+                  {{ s.result.email_error }}
+                </div>
+
+              {% endif %}
+
+
+
+              {% if s.result and s.result.is_published %}
+                <a href="{{ url_for('admin.resend_result_email', student_id=s.id) }}"
+                  class="btn btn-sm btn-primary"
+                  title="Resend Email">
+                  <i class="bi bi-envelope"></i>
+                </a>
+              {% endif %}
+
+                <!-- View Result -->
+                <a href="{{ url_for('admin.view_result', student_id=s.id) }}"
+                  class="btn btn-sm btn-info">
+                  <i class="bi bi-eye"></i>
+                </a>
+
+                {% if s.result %}
+
+                  {% if not s.result.is_published %}
+                    <!-- Publish -->
+                    <a href="{{ url_for('admin.publish_result', student_id=s.id) }}"
+                      class="btn btn-sm btn-success"
+                      title="Publish Result"
+                      onclick="return confirm('Publish result for {{ s.name }}?')">
+                      <i class="bi bi-upload"></i>
+                    </a>
+
+                  {% else %}
+                    <!-- Published badge -->
+                    <span class="badge bg-success">
+                      <i class="bi bi-check-circle"></i>
+                    </span>
+
+                    <!-- SMALL Unpublish (icon only) -->
+                    <a href="{{ url_for('admin.unpublish_result', student_id=s.id) }}"
+                      class="btn btn-sm btn-outline-danger"
+                      title="Unpublish Result"
+                      onclick="return confirm('Unpublish result for {{ s.name }}?')">
+                      <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
+                  {% endif %}
+
+                {% else %}
+                  <span class="badge bg-secondary">No Result</span>
+                {% endif %}
+
+                <!-- Edit -->
+                <a href="{{ url_for('admin.add_student') }}?id={{ s.id }}"
+                  class="btn btn-sm btn-warning">
+                  Edit
+                </a>
+
+                <!-- Delete -->
+                <a href="{{ url_for('admin.delete_student', id=s.id) }}"
+                  class="soft-action text-danger"
+                  onclick="return confirm('Delete student?')">
+                  <i class="bi bi-trash"></i>
+                </a>
+
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ================= TEACHERS ================= -->
+  <div class="soft-card">
+    <h5 class="soft-title">Teachers</h5>
+
+    <table class="table soft-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for t in teachers %}
+        <tr>
+          <td>{{ t.username }}</td>
+          <td class="text-end">
+            <a href="{{ url_for('admin.add_teacher') }}?id={{ t.id }}"
+               class="btn btn-sm btn-warning">
+              Edit
+            </a>
+
+            <a href="{{ url_for('admin.delete_teacher', id=t.id) }}"
+               class="soft-action text-danger"
+               onclick="return confirm('Delete teacher?')">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ================= SELECT ALL SCRIPT (FIXED) ================= -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const selectAll = document.getElementById("selectAll");
+
+    if (selectAll) {
+      selectAll.addEventListener("change", function () {
+
+        const checkboxes = document.querySelectorAll(".student-checkbox");
+
+        checkboxes.forEach(function (cb) {
+          cb.checked = selectAll.checked;
+        });
+
+      });
+    }
+
+  });
+</script>
+<script>
+  function toggleError(id) {
+    const el = document.getElementById("error-" + id);
+    if (!el) return;
+    el.style.display = el.style.display === "none" ? "block" : "none";
+  }
+</script>
+

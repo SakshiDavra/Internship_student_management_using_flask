@@ -1,0 +1,26 @@
+{% include 'layout/header.html' %}
+
+<div class="container mt-4">
+  <div class="card p-4">
+    <h5>Add Division</h5>
+
+    <form method="post" class="row g-2">
+      <div class="col-md-8">
+        <input class="form-control" name="division"
+               placeholder="Division (A/B/C)" required>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-main w-100">Add</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card mt-4 p-3">
+    <h6>Division List</h6>
+    <table class="table">
+      {% for d in divisions %}
+      <tr><td>{{ d.division_name }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>

@@ -1,0 +1,587 @@
+/* ================= THEME COLORS ================= */
+:root {
+  --dark: #2f3e2e;
+  --green: #6b8e4e;
+  --light: #9bbf6a;
+  --bg: #f0dfb6;
+}
+
+/* ================= GLOBAL ================= */
+body {
+  background-color: var(--bg);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ================= NAVBAR (COMMON HEADER) ================= */
+.navbar,
+.main-navbar {
+  background-color: var(--dark);
+  padding: 12px 20px;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.navbar .nav-link i {
+  margin-right: 6px;
+}
+
+.navbar .nav-link:hover {
+  color: var(--light) !important;
+  transform: translateY(-2px);
+}
+
+/* ================= CARD ================= */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.6s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+/* ================= BUTTON ================= */
+.btn-main {
+  background-color: var(--green);
+  color: white;
+  border: none;
+}
+
+.btn-main:hover {
+  background-color: var(--light);
+  color: #000;
+}
+
+/* ================= PAGE TITLE ================= */
+.page-title {
+  color: var(--dark);
+  font-weight: 700;
+  margin-bottom: 20px;
+  animation: fadeDown 0.6s ease;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ================= FORM PAGE ================= */
+
+.form-page {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= FORM CARD ================= */
+
+.form-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 480px;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  animation: fadeInUp 0.5s ease;
+}
+
+/* ================= FORM HEADER ================= */
+
+.form-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.form-header h4 {
+  color: var(--dark);
+  font-weight: 700;
+}
+
+.form-header p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* ================= FORM GROUP ================= */
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ================= INPUT WITH ICON ================= */
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: var(--green);
+  font-size: 16px;
+}
+
+.input-icon input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.input-icon input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 0.15rem rgba(107, 142, 78, 0.3);
+}
+
+/* ================= BUTTON ================= */
+
+.btn-main {
+  background-color: var(--green);
+  border: none;
+  padding: 10px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.btn-main:hover {
+  background-color: var(--light);
+  transform: translateY(-2px);
+}
+/* ================= SOFT DASHBOARD DESIGN ================= */
+
+.soft-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--green);
+}
+
+.soft-title {
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.soft-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 40px;
+  height: 3px;
+  background-color: var(--light);
+  border-radius: 10px;
+}
+
+/* ================= TABLE ================= */
+
+.soft-table thead th {
+  font-size: 13px;
+  color: var(--dark);
+  border-bottom: 2px solid #eee;
+}
+
+.soft-table tbody td {
+  font-size: 14px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.soft-table tbody tr {
+  transition: background 0.25s;
+}
+
+.soft-table tbody tr:hover {
+  background-color: rgba(155, 191, 106, 0.15);
+}
+
+/* ================= ACTION ICONS ================= */
+
+.soft-action {
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.soft-action:hover {
+  opacity: 0.6;
+}
+
+
+/* ===== SUBJECT FORM ===== */
+
+.form-control {
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* keep buttons consistent */
+.btn-main {
+  height: 42px;
+}
+
+select.form-control {
+  cursor: pointer;
+}
+/* ================= THEME COLORS ================= */
+:root {
+  --dark: #2f3e2e;
+  --green: #6b8e4e;
+  --light: #9bbf6a;
+  --bg: #f0dfb6;
+}
+
+/* ================= GLOBAL ================= */
+body {
+  background-color: var(--bg);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ================= NAVBAR (COMMON HEADER) ================= */
+.navbar,
+.main-navbar {
+  background-color: var(--dark);
+  padding: 12px 20px;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.navbar .nav-link i {
+  margin-right: 6px;
+}
+
+.navbar .nav-link:hover {
+  color: var(--light) !important;
+  transform: translateY(-2px);
+}
+
+/* ================= CARD ================= */
+.card {
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.6s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+/* ================= BUTTON ================= */
+.btn-main {
+  background-color: var(--green);
+  color: white;
+  border: none;
+}
+
+.btn-main:hover {
+  background-color: var(--light);
+  color: #000;
+}
+
+/* ================= PAGE TITLE ================= */
+.page-title {
+  color: var(--dark);
+  font-weight: 700;
+  margin-bottom: 20px;
+  animation: fadeDown 0.6s ease;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ================= FORM PAGE ================= */
+
+.form-page {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= FORM CARD ================= */
+
+.form-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 480px;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  animation: fadeInUp 0.5s ease;
+}
+
+/* ================= FORM HEADER ================= */
+
+.form-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.form-header h4 {
+  color: var(--dark);
+  font-weight: 700;
+}
+
+.form-header p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* ================= FORM GROUP ================= */
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ================= INPUT WITH ICON ================= */
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: var(--green);
+  font-size: 16px;
+}
+
+.input-icon input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.input-icon input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 0.15rem rgba(107, 142, 78, 0.3);
+}
+
+/* ================= BUTTON ================= */
+
+.btn-main {
+  background-color: var(--green);
+  border: none;
+  padding: 10px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.btn-main:hover {
+  background-color: var(--light);
+  transform: translateY(-2px);
+}
+/* ================= SOFT DASHBOARD DESIGN ================= */
+
+.soft-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--green);
+}
+
+.soft-title {
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.soft-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 40px;
+  height: 3px;
+  background-color: var(--light);
+  border-radius: 10px;
+}
+
+/* ================= TABLE ================= */
+
+.soft-table thead th {
+  font-size: 13px;
+  color: var(--dark);
+  border-bottom: 2px solid #eee;
+}
+
+.soft-table tbody td {
+  font-size: 14px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.soft-table tbody tr {
+  transition: background 0.25s;
+}
+
+.soft-table tbody tr:hover {
+  background-color: rgba(155, 191, 106, 0.15);
+}
+
+/* ================= ACTION ICONS ================= */
+
+.soft-action {
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.soft-action:hover {
+  opacity: 0.6;
+}
+
+
+/* ===== SUBJECT FORM ===== */
+
+.form-control {
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* keep buttons consistent */
+.btn-main {
+  height: 42px;
+}
+
+select.form-control {
+  cursor: pointer;
+}
+/* ===== RESULT SHEET ===== */
+
+.result-sheet {
+  background: #fff;
+  padding: 30px;
+  border: 1px solid #ccc;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.result-logo {
+  height: 70px;
+}
+
+.result-sheet h5,
+.result-sheet h6 {
+  letter-spacing: 0.5px;
+}
+
+
+/* ===== WKHTMLTOPDF TABLE PAGE-BREAK FIX ===== */
+.result-table {
+  page-break-inside: auto !important;
+}
+
+.result-table tr {
+  page-break-inside: avoid !important;
+  page-break-after: auto !important;
+}
+
+.result-table tbody {
+  display: table-row-group !important;
+}
+.result-table {
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+.result-table td,
+.result-table th {
+  padding: 5px 8px !important;
+  line-height: 1.2 !important;
+  padding: 8px 10px !important;   /* pehla 5px hatu */
+  line-height: 1.35 !important;   /* readability mate */
+  vertical-align: middle !important;
+}
+

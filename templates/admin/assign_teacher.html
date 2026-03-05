@@ -1,0 +1,130 @@
+{% include 'layout/header.html' %}
+
+<div class="container mt-4">
+  <div class="soft-card">
+    <h5 class="soft-title">Assign Teacher</h5>
+
+    <form method="post" class="row g-3 mb-4">
+
+      <!-- TEACHER -->
+      <div class="col-md-2">
+        <select name="teacher_id" class="form-control" required>
+          <option value="">Teacher</option>
+          {% for t in teachers %}
+            <option value="{{ t.id }}">{{ t.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- COURSE -->
+      <div class="col-md-2">
+        <select name="course_id" id="courseSelect" class="form-control" required>
+          <option value="">Course</option>
+          {% for c in courses %}
+            <option value="{{ c.id }}">{{ c.course_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- YEAR (DYNAMIC) -->
+      <div class="col-md-2">
+        <select name="year_id" id="yearSelect" class="form-control" required>
+          <option value="">Year</option>
+        </select>
+      </div>
+
+      <!-- DIVISION -->
+      <div class="col-md-2">
+        <select name="division_id" class="form-control" required>
+          <option value="">Division</option>
+          {% for d in divisions %}
+            <option value="{{ d.id }}">{{ d.division_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- SUBJECT (DYNAMIC) -->
+      <div class="col-md-2">
+        <select name="subject_id" id="subjectSelect" class="form-control" required>
+          <option value="">Subject</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-main w-100">Assign</button>
+      </div>
+    </form>
+
+    <!-- ASSIGNMENT LIST -->
+    <table class="table soft-table">
+      <thead>
+        <tr>
+          <th>Teacher</th>
+          <th>Course</th>
+          <th>Year</th>
+          <th>Division</th>
+          <th>Subject</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in assignments %}
+        <tr>
+          <td>{{ a.teacher.username }}</td>
+          <td>{{ a.course.course_name }}</td>
+          <td>Year {{ a.year.year_no }}</td>
+          <td>{{ a.division.division_name }}</td>
+          <td>{{ a.subject.subject_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<script>
+const courseSelect  = document.getElementById("courseSelect");
+const yearSelect    = document.getElementById("yearSelect");
+const subjectSelect = document.getElementById("subjectSelect");
+
+
+courseSelect.addEventListener("change", function () {
+  const courseId = this.value;
+
+  yearSelect.innerHTML = '<option value="">Year</option>';
+  subjectSelect.innerHTML = '<option value="">Subject</option>';
+
+  if (!courseId) return;
+
+  fetch(`/admin/get-years/${courseId}`)
+    .then(res => res.json())
+    .then(data => {
+      data.years.forEach(y => {
+        const opt = document.createElement("option");
+        opt.value = y.id;
+        opt.textContent = y.name;
+        yearSelect.appendChild(opt);
+      });
+    });
+});
+
+yearSelect.addEventListener("change", function () {
+  const courseId = courseSelect.value;
+  const yearId   = this.value;
+
+  subjectSelect.innerHTML = '<option value="">Subject</option>';
+
+  if (!courseId || !yearId) return;
+
+  fetch(`/admin/get-subjects?course_id=${courseId}&year_id=${yearId}`)
+    .then(res => res.json())
+    .then(data => {
+      data.subjects.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = s.name;
+        subjectSelect.appendChild(opt);
+      });
+    });
+});
+</script>

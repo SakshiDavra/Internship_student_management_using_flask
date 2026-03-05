@@ -1,0 +1,83 @@
+{% include 'layout/header.html' %}
+<div class="container mt-4">
+  <div class="soft-card">
+
+    <h5 class="soft-title">Manage Academic Years</h5>
+
+    <form method="post" class="row g-3 mb-4">
+
+      <!-- COURSE SELECT -->
+      <div class="col-md-5">
+        <select name="course_id" class="form-control" id="courseSelect" required>
+          <option value="">Select Course</option>
+          {% for c in courses %}
+            <option value="{{ c.id }}" data-duration="{{ c.duration_years }}">
+              {{ c.course_name }} ({{ c.duration_years }} yrs)
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- YEAR SELECT -->
+      <div class="col-md-5">
+        <select name="year_no" class="form-control" id="yearSelect" required>
+          <option value="">Select Year</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <button class="btn btn-main w-100">Add</button>
+      </div>
+
+    </form>
+
+    <!-- YEAR LIST -->
+   <table class="table">
+  <thead>
+    <tr>
+      <th>Course</th>
+      <th>Total Years</th>
+      <th>Years</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in courses %}
+    <tr>
+      <td>{{ c.course_name }}</td>
+      <td>{{ c.duration_years }}</td>
+      <td>
+        {% for y in c.years %}
+          Year {{ y.year_no }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const courseSelect = document.getElementById("courseSelect");
+  const yearSelect = document.getElementById("yearSelect");
+
+  courseSelect.addEventListener("change", function () {
+    yearSelect.innerHTML = '<option value="">Select Year</option>';
+
+    const duration = this.options[this.selectedIndex].dataset.duration;
+
+    if (!duration) return;
+
+    for (let i = 1; i <= parseInt(duration); i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = "Year " + i;
+      yearSelect.appendChild(opt);
+    }
+  });
+
+});
+</script>

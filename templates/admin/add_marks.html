@@ -1,0 +1,237 @@
+{% include 'layout/header.html' %}
+
+<script>
+  const USER_ROLE = "{{ session.get('role') }}";
+</script>
+
+<div class="container mt-4">
+
+  <!-- ================= ADD / EDIT FORM ================= -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white d-flex align-items-center">
+      <i class="bi bi-journal-text fs-5 me-2"></i>
+      <h5 class="mb-0">Add / Edit Marks</h5>
+    </div>
+
+    <div class="card-body">
+      <form method="post" class="row g-3">
+
+        {% if edit_record %}
+          <input type="hidden" name="edit_id" value="{{ edit_record.id }}">
+        {% endif %}
+
+        <!-- Academic Year -->
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Academic Year</label>
+          <select id="year" name="year_id" class="form-select" required>
+            <option value="">Select Year</option>
+            {% for y in years %}
+              <option value="{{ y.id }}"
+                {% if edit_record and edit_record.student.year_id == y.id %}selected{% endif %}>
+                {{ y.course.course_name }} - Year {{ y.year_no }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Division -->
+        <div class="col-md-2">
+          <label class="form-label fw-semibold">Division</label>
+          <select id="division" name="division_id" class="form-select" required>
+            <option value="">Select</option>
+            {% for d in divisions %}
+              <option value="{{ d.id }}"
+                {% if edit_record and edit_record.student.division_id == d.id %}selected{% endif %}>
+                {{ d.division_name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Student -->
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Student</label>
+          <select id="student" name="student_id" class="form-select" required>
+            {% if edit_record %}
+              <option value="{{ edit_record.student.id }}" selected>
+                {{ edit_record.student.name }}
+              </option>
+            {% else %}
+              <option value="">Select Student</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <!-- Subject -->
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Subject</label>
+          <select id="subject" name="subject_id" class="form-select" required>
+            {% if edit_record %}
+              <option value="{{ edit_record.subject.id }}" selected>
+                {{ edit_record.subject.subject_name }}
+              </option>
+            {% else %}
+              <option value="">Select Subject</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <!-- Marks -->
+        <div class="col-md-1">
+          <label class="form-label fw-semibold">Marks</label>
+          <input type="number"
+                 name="marks"
+                 class="form-control text-center"
+                 required
+                 value="{{ edit_record.marks if edit_record else '' }}">
+        </div>
+
+        <div class="col-12 text-end">
+          <button class="btn btn-success px-4">
+            <i class="bi bi-save me-1"></i>
+            {% if edit_record %}Update{% else %}Save{% endif %}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= STUDENT MARKS TABLE ================= -->
+  <div class="card mt-4 shadow-sm border-0">
+    <div class="card-header bg-light">
+      <h6 class="mb-0 fw-bold">Student Marks</h6>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>Roll</th>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for student, marks_list in student_marks.items() %}
+            {% for m in marks_list %}
+            <tr>
+              {% if loop.first %}
+                <td rowspan="{{ marks_list|length }}"><b>{{ student.roll_no }}</b></td>
+                <td rowspan="{{ marks_list|length }}">
+                  <b>{{ student.name }}</b><br>
+                  <small class="text-muted">
+                    Year {{ student.year.year_no }} |
+                    Div {{ student.division.division_name }}
+                  </small>
+                </td>
+              {% endif %}
+
+              <td>{{ m.subject.subject_name }}</td>
+              <td>
+                <span class="badge bg-success">
+                  {{ m.marks }} / {{ m.subject.max_marks }}
+                </span>
+              </td>
+
+              <td class="text-center">
+                {% if session.get('role') == 'admin' %}
+                  <a href="{{ url_for('admin.add_marks', edit=m.id) }}"
+                    class="text-primary me-2">
+                    <i class="bi bi-pencil-square"></i>
+                  </a>
+                {% elif session.get('role') == 'teacher' %}
+                  <a href="{{ url_for('teacher.add_marks', edit=m.id) }}"
+                    class="text-primary me-2">
+                    <i class="bi bi-pencil-square"></i>
+                  </a>
+                {% endif %}
+
+
+                {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin.delete_marks', id=m.id) }}"
+                   class="btn btn-sm btn-outline-danger"
+                   onclick="return confirm('Delete marks?')">
+                  <i class="bi bi-trash"></i>
+                </a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const yearSelect = document.getElementById("year");
+const divisionSelect = document.getElementById("division");
+const studentSelect = document.getElementById("student");
+const subjectSelect = document.getElementById("subject");
+
+
+function loadStudents() {
+  if (!yearSelect.value || !divisionSelect.value) return;
+
+  let url = "";
+
+  if (USER_ROLE === "admin") {
+    url = `/admin/get-students?year_id=${yearSelect.value}&division_id=${divisionSelect.value}`;
+  }
+
+  if (USER_ROLE === "teacher") {
+    url = `/teacher/get-students?year_id=${yearSelect.value}&division_id=${divisionSelect.value}`;
+  }
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      studentSelect.innerHTML = '<option value="">Select Student</option>';
+      data.students.forEach(s => {
+        studentSelect.innerHTML +=
+          `<option value="${s.id}">${s.name}</option>`;
+      });
+    });
+}
+
+
+function loadSubjects() {
+  if (!yearSelect.value || !divisionSelect.value) return;
+
+  let url = "";
+
+  if (USER_ROLE === "admin") {
+    url = `/admin/get-subjects-by-year?year_id=${yearSelect.value}`;
+  }
+
+  if (USER_ROLE === "teacher") {
+    url = `/teacher/get-subjects?year_id=${yearSelect.value}&division_id=${divisionSelect.value}`;
+  }
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+      data.subjects.forEach(s => {
+        subjectSelect.innerHTML +=
+          `<option value="${s.id}">${s.name}</option>`;
+      });
+    });
+}
+
+yearSelect.addEventListener("change", () => {
+  loadStudents();
+  loadSubjects();
+});
+
+divisionSelect.addEventListener("change", () => {
+  loadStudents();
+  loadSubjects();
+});
+</script>

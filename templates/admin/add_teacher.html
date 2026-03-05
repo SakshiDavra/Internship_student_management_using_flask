@@ -1,0 +1,40 @@
+{% include 'layout/header.html' %}
+
+
+<div class="container form-page">
+  <div class="form-card">
+
+    <div class="form-header">
+      <h4>
+        {% if teacher %}
+          Edit Teacher
+        {% else %}
+          Add Teacher
+        {% endif %}
+      </h4>
+      {% if not teacher %}
+      <p>
+        Default Password: <b>teacher</b>
+      </p>
+      {% endif %}
+    </div>
+
+    <form method="post">
+
+      <div class="form-group">
+        <label>Teacher Username</label>
+        <div class="input-icon">
+          <i class="bi bi-person-badge"></i>
+          <input type="text" name="username" required
+                 value="{{ teacher.username if teacher }}">
+        </div>
+      </div>
+
+      <button class="btn-main w-100 mt-3">
+        {% if teacher %}Update Teacher{% else %}Add Teacher{% endif %}
+      </button>
+
+    </form>
+
+  </div>
+</div>

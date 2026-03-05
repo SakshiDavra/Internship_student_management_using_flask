@@ -1,0 +1,96 @@
+{% include 'layout/header.html' %}
+
+<div class="container form-page mt-4">
+  <div class="form-card">
+
+    <div class="form-header">
+      <h4>
+        {% if student %}
+          Edit Student
+        {% else %}
+          Add Student
+        {% endif %}
+      </h4>
+      <p>
+        {% if not student %}
+          Create student account with default password
+        {% endif %}
+      </p>
+    </div>
+
+    <form method="post">
+
+      {% if not student %}
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-icon">
+          <i class="bi bi-person"></i>
+          <input type="text" name="username" required>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label>Roll Number</label>
+        <div class="input-icon">
+          <i class="bi bi-hash"></i>
+          <input type="text" name="roll_no" required
+                 value="{{ student.roll_no if student }}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Student Name</label>
+        <div class="input-icon">
+          <i class="bi bi-person-badge"></i>
+          <input type="text" name="name" required
+                 value="{{ student.name if student }}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Course</label>
+        <div class="input-icon">
+          <select name="course_id" required>
+            {% for c in courses %}
+              <option value="{{ c.id }}"
+                {% if student and c.id == student.course_id %}selected{% endif %}>
+                {{ c.course_name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Academic Year</label>
+        <div class="input-icon">
+          <select name="year_id" required>
+            {% for y in years %}
+              <option value="{{ y.id }}"
+                {% if student and y.id == student.year_id %}selected{% endif %}>
+                {{ y.course.course_name }} - Year {{ y.year_no }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Division</label>
+        <div class="input-icon">
+          <select name="division_id" required>
+            {% for d in divisions %}
+              <option value="{{ d.id }}"
+                {% if student and d.id == student.division_id %}selected{% endif %}>
+                {{ d.division_name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-main w-100 mt-3">
+        {% if student %}Update Student{% else %}Add Student{% endif %}
+      </button>
+
+    </form>
+
+  </div>
+</div>
